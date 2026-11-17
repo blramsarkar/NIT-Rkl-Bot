@@ -1,0 +1,135 @@
+<!-- ==============================================================================
+ * File: admin/index.html
+ * Role: Admin view for NIT RKL Bot (served at /admin-ui/)
+ * Purpose: Review logs and thumbs-down feedback, see unanswered questions, write
+ *          verified answers that override the bot, and trigger re-ingestion.
+ *          Requires ADMIN_API_KEY (entered here, kept in sessionStorage only).
+ * ============================================================================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>NIT RKL Bot — Admin</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" />
+  <style>
+    :root { --navy: #c35839; --gold: #f9b117; --bg: #f9f8f8; --line: #E5E7EB; --text: #1F2937; --muted: #6B7280; --red: #B91C1C; --green: #15803D; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Nunito', 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+    header { background: var(--navy); color: #fff; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+    main { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+    .hidden { display: none !important; }
+    nav { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+    nav button { border: 1px solid var(--line); background: #fff; padding: 8px 14px; border-radius: 8px; cursor: pointer; font: inherit; }
+    nav button.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    button.primary { background: var(--navy); color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font: inherit; }
+    button.ghost { background: #fff; border: 1px solid var(--line); padding: 5px 10px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 12.5px; }
+    button.danger { color: var(--red); }
+    input, textarea, select { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; width: 100%; }
+    textarea { min-height: 110px; resize: vertical; }
+    label { display: block; font-weight: 600; margin: 10px 0 4px; font-size: 13px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .stat { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+    .stat .v { font-size: 24px; font-weight: 700; color: var(--navy); }
+    .stat .k { color: var(--muted); font-size: 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { font-size: 12px; color: var(--muted); font-weight: 600; }
+    td.resp { max-width: 420px; white-space: pre-wrap; font-size: 12.5px; color: #374151; }
+    .pill { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 11.5px; background: #EEF2F7; }
+    .pill.bad { background: #FEE2E2; color: var(--red); }
+    .pill.good { background: #DCFCE7; color: var(--green); }
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .muted { color: var(--muted); }
+    .error { color: var(--red); margin-top: 8px; }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+    .toolbar select { width: auto; }
+    pre { white-space: pre-wrap; font-size: 12px; background: #F9FAFB; padding: 8px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NIT RKL Bot — Admin</h1>
+    <button class="ghost hidden" id="logoutBtn" type="button">Sign out</button>
+  </header>
+  <main>
+    <section class="card" id="loginCard">
+      <h2 style="margin-top:0;font-size:16px;">Sign in</h2>
+      <p class="muted">Enter the <code>ADMIN_API_KEY</code> from the backend <code>.env</code>. It is kept only for this browser tab.</p>
+      <div class="row">
+        <input type="password" id="keyInput" placeholder="Admin key" autocomplete="off" style="max-width:360px;" />
+        <button class="primary" id="loginBtn" type="button">Sign in</button>
+      </div>
+      <div class="error" id="loginError"></div>
+    </section>
+
+    <div id="app" class="hidden">
+      <nav id="tabs">
+        <button type="button" data-tab="overview" class="active">Overview</button>
+        <button type="button" data-tab="logs">Logs &amp; feedback</button>
+        <button type="button" data-tab="unanswered">Unanswered</button>
+        <button type="button" data-tab="verified">Verified answers</button>
+        <button type="button" data-tab="ingestion">Ingestion</button>
+      </nav>
+
+      <section data-panel="overview">
+        <div class="stats" id="stats"></div>
+        <div class="card" style="margin-top:16px;">
+          <div class="row"><strong>Re-ingest official pages now</strong>
+            <button class="primary" id="reingestBtn" type="button">Run re-ingestion</button>
+            <button class="ghost" id="clearCacheBtn" type="button">Clear answer cache</button>
+            <span class="muted" id="overviewMsg"></span></div>
+        </div>
+      </section>
+
+      <section data-panel="logs" class="hidden card">
+        <div class="toolbar">
+          <select id="logFilter">
+            <option value="all">All recent</option>
+            <option value="negative">Thumbs down only</option>
+            <option value="low">Unanswered / low confidence</option>
+          </select>
+          <button class="ghost" id="refreshLogs" type="button">Refresh</button>
+        </div>
+        <table><thead><tr><th>Time</th><th>Question (redacted)</th><th>Answer</th><th>Route</th><th>Feedback</th><th></th></tr></thead>
+          <tbody id="logRows"></tbody></table>
+      </section>
+
+      <section data-panel="unanswered" class="hidden card">
+        <table><thead><tr><th>Question</th><th>Times asked</th><th>Last asked</th><th></th></tr></thead>
+          <tbody id="unansweredRows"></tbody></table>
+      </section>
+
+      <section data-panel="verified" class="hidden">
+        <div class="card">
+          <h3 style="margin-top:0;font-size:15px;" id="vaFormTitle">Add verified answer</h3>
+          <p class="muted">Verified answers are matched before the AI runs. Use them for fees, deadlines, admission rules, and to fix wrong answers.</p>
+          <input type="hidden" id="vaId" /><input type="hidden" id="vaUnansweredId" />
+          <label for="vaQuestion">Question</label><input id="vaQuestion" maxlength="500" />
+          <label for="vaAnswer">Answer</label><textarea id="vaAnswer" maxlength="4000"></textarea>
+          <label for="vaSource">Official source URL (nitrkl.ac.in)</label><input id="vaSource" maxlength="500" placeholder="https://www.nitrkl.ac.in/..." />
+          <label><input type="checkbox" id="vaActive" checked style="width:auto;" /> Active</label>
+          <div class="row" style="margin-top:10px;">
+            <button class="primary" id="vaSave" type="button">Save</button>
+            <button class="ghost" id="vaReset" type="button">Clear</button>
+            <span class="muted" id="vaMsg"></span>
+          </div>
+        </div>
+        <div class="card">
+          <table><thead><tr><th>Question</th><th>Answer</th><th>Source</th><th>Status</th><th></th></tr></thead>
+            <tbody id="vaRows"></tbody></table>
+        </div>
+      </section>
+
+      <section data-panel="ingestion" class="hidden card">
+        <table><thead><tr><th>Started</th><th>Trigger</th><th>Updated</th><th>Unchanged</th><th>Failed</th><th>Details</th></tr></thead>
+          <tbody id="runRows"></tbody></table>
+      </section>
+    </div>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>

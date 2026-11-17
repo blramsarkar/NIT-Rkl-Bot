@@ -1,0 +1,183 @@
+<!-- ==============================================================================
+ * File: widget/index.html
+ * Role: Local HTML Widget Demonstration & Testbed
+ * Purpose: Mirrors the layout and colours of www.nitrkl.ac.in (white header with the
+ *          trilingual institute name, brick-red menu bar, inside-page banner,
+ *          light footer, Nunito font, primary #c35839) so the embedded
+ *          `nitrkl-bot-widget.js` / `.css` can be checked in context.
+ * ============================================================================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIT Rourkela Chatbot Demo</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" />
+  <link rel="stylesheet" href="nitrkl-bot-widget.css" />
+  <style>
+    :root {
+      --primary: #c35839;     /* nitrkl.ac.in --bs-primary */
+      --primary-dark: #9e432a;
+      --accent: #f9b117;
+      --text: #212529;
+      --muted: #505050;
+      --line: #e6e1df;
+      --bg: #f9f8f8;
+      --card: #ffffff;
+    }
+    /* nitrkl.ac.in is light-only, so this page is too (the widget has its own theme toggle) */
+    :root { color-scheme: light; }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); overflow-wrap: anywhere; }
+    img { max-width: 100%; }
+    a { color: var(--primary); }
+
+    /* Top header: logo + trilingual name + slogan + search (as on nitrkl.ac.in) */
+    .top-header { background: #fff; border-bottom: 1px solid #eee; }
+    .top-header .wrap { max-width: 1200px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .logo { width: 72px; height: 72px; object-fit: contain; }
+    .names { flex: 1 1 240px; min-width: 0; }
+    .names p { margin: 0; line-height: 1.35; color: #111; }
+    .names p:first-child { font-size: 20px; font-weight: 800; color: var(--primary); }
+    .names p:not(:first-child) { font-size: 14px; font-weight: 600; }
+    .slogan { font-size: 13px; color: #505050; font-style: italic; margin-top: 2px; }
+    .search { margin-left: auto; display: flex; }
+    .search input { border: 1px solid #ccc; border-right: 0; padding: 8px 12px; font: inherit; border-radius: 4px 0 0 4px; width: 200px; max-width: 50vw; }
+    .search button { background: var(--primary); color: #fff; border: 0; padding: 0 14px; border-radius: 0 4px 4px 0; font: inherit; cursor: pointer; }
+
+    /* Brick-red menu bar */
+    .menu { background: var(--primary); }
+    .menu ul { max-width: 1200px; margin: 0 auto; padding: 0 16px; list-style: none; display: flex; flex-wrap: wrap; }
+    .menu a { display: block; color: #fff; text-decoration: none; padding: 12px 14px; font-weight: 700; font-size: 14.5px; }
+    .menu a:hover, .menu a:focus-visible { background: var(--primary-dark); }
+
+    /* Inside-page banner with breadcrumb */
+    .banner { background: linear-gradient(90deg, rgba(158,67,42,.95), rgba(195,88,57,.85)); color: #fff; }
+    .banner .wrap { max-width: 1200px; margin: 0 auto; padding: 36px 16px; }
+    .banner h1 { margin: 0 0 6px; font-size: 30px; font-weight: 800; }
+    .breadcrumb { font-size: 14px; opacity: .95; }
+    .breadcrumb a { color: #fff; }
+
+    main { max-width: 1200px; margin: 0 auto; padding: 28px 16px 48px; display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+    main > * { min-width: 0; }
+    @media (max-width: 860px) {
+      main { grid-template-columns: 1fr; }
+      .search { margin-left: 0; width: 100%; }
+      .search input { flex: 1; width: auto; max-width: none; }
+      .names p:first-child { font-size: 18px; }
+      .logo { width: 56px; height: 56px; }
+    }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 22px; }
+    .heading { font-size: 22px; font-weight: 700; color: var(--primary); margin: 0 0 12px; }
+    .card p, .card li { color: var(--muted); line-height: 1.6; }
+    .card li em { color: var(--text); font-style: normal; font-weight: 600; }
+    .btn { background: var(--primary); color: #fff; border: 0; padding: 10px 18px; border-radius: 4px; font: inherit; font-weight: 700; cursor: pointer; margin-top: 8px; }
+    .btn:hover { background: var(--primary-dark); }
+    .related { list-style: none; padding: 0; margin: 0; }
+    .related li { border-bottom: 1px dashed var(--line); }
+    .related a { display: flex; justify-content: space-between; padding: 9px 0; text-decoration: none; font-weight: 600; }
+
+    footer { background: var(--card); border-top: 4px solid var(--primary); }
+    footer .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+    footer strong { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <header class="top-header">
+    <div class="wrap">
+      <img class="logo" src="https://www.nitrkl.ac.in/assets/images/logo.png" alt="NIT Rourkela logo" />
+      <div class="names">
+        <p>National Institute of Technology Rourkela</p>
+        <p>राष्ट्रीय प्रौद्योगिकी संस्थान, राउरकेला</p>
+        <p>ଜାତୀୟ ପ୍ରଯୁକ୍ତି ପ୍ରତିଷ୍ଠାନ ରାଉରକେଲା</p>
+        <div class="slogan">An Institute of National Importance</div>
+      </div>
+      <form class="search" onsubmit="event.preventDefault(); askBot(this.q.value)">
+        <input name="q" type="text" placeholder="Ask NIT RKL Bot..." aria-label="Ask NIT RKL Bot" />
+        <button type="submit" aria-label="Ask">Ask</button>
+      </form>
+    </div>
+  </header>
+
+  <nav class="menu" aria-label="Main">
+    <ul>
+      <li><a href="https://www.nitrkl.ac.in/">Home</a></li>
+      <li><a href="https://www.nitrkl.ac.in/Institute/Welcome/">Institute</a></li>
+      <li><a href="https://www.nitrkl.ac.in/Academic/UGProgramme/">Academics</a></li>
+      <li><a href="https://www.nitrkl.ac.in/Academic/Engineering/">Departments</a></li>
+      <li><a href="https://www.nitrkl.ac.in/Research/SponsoredProjects/">Research</a></li>
+      <li><a href="https://www.nitrkl.ac.in/Student/WhyNITR/">Students</a></li>
+      <li><a href="https://www.nitrkl.ac.in/FacultyStaff/Faculty/">Faculty &amp; Staff</a></li>
+      <li><a href="https://www.nitrkl.ac.in/Home/AllNotice/">Notices</a></li>
+    </ul>
+  </nav>
+
+  <section class="banner">
+    <div class="wrap">
+      <h1>NIT RKL Bot</h1>
+      <div class="breadcrumb"><a href="https://www.nitrkl.ac.in/">Home</a> / Student Help / NIT RKL Bot</div>
+    </div>
+  </section>
+
+  <main>
+    <div class="card">
+      <h2 class="heading">Ask anything about NIT Rourkela</h2>
+      <p>
+        The assistant answers from the institute's own records: departments, HODs and faculty for all
+        20 departments, B.Tech / M.Tech / Dual Degree / M.Sc / Ph.D programmes, curricula, current notices,
+        the academic calendar, hostels and regulations. If something isn't in its records, it searches the
+        official nitrkl.ac.in website live and links the page it used.
+      </p>
+      <p><strong>Try asking:</strong></p>
+      <ul>
+        <li><em>Who is the HOD of Computer Science?</em></li>
+        <li><em>Which departments offer M.Tech?</em></li>
+        <li><em>B.Tech programmes in Electrical Engineering</em></li>
+        <li><em>Faculty working on image processing</em></li>
+        <li><em>Anti-ragging committee contact</em> (live website search)</li>
+        <li><em>Latest notices</em></li>
+        <li>Switch the chat language to हिंदी or ଓଡ଼ିଆ and ask again.</li>
+      </ul>
+      <button class="btn" onclick="document.getElementById('nitrklTriggerBtn').click()">Open NIT RKL Bot</button>
+    </div>
+
+    <aside class="card">
+      <h2 class="heading">Related Links</h2>
+      <ul class="related">
+        <li><a href="https://www.nitrkl.ac.in/Academic/Admission/">Admissions <span aria-hidden="true">›</span></a></li>
+        <li><a href="https://www.nitrkl.ac.in/Academic/CurriculaSyllabi/">Curricula &amp; Syllabi <span aria-hidden="true">›</span></a></li>
+        <li><a href="https://www.nitrkl.ac.in/Academic/AcademicCalendar/">Academic Calendar <span aria-hidden="true">›</span></a></li>
+        <li><a href="https://www.nitrkl.ac.in/Student/Scholarships_Financial_Assistance/">Scholarships <span aria-hidden="true">›</span></a></li>
+        <li><a href="https://www.nitrkl.ac.in/Hall/">Halls of Residence <span aria-hidden="true">›</span></a></li>
+        <li><a href="https://www.nitrkl.ac.in/CDC/">Career Development Centre <span aria-hidden="true">›</span></a></li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div><strong>National Institute of Technology Rourkela</strong><br />Sundargarh, Odisha, India - 769008</div>
+      <div>Chatbot demo page &middot; answers link to official nitrkl.ac.in pages</div>
+    </div>
+  </footer>
+
+  <!-- API endpoint: same origin when served by the FastAPI backend (/widget/).
+       On nitrkl.ac.in use the full backend URL, e.g. https://bot.nitrkl.ac.in/chat -->
+  <script>
+    window.NITRKL_BOT_API_URL = "/chat";
+    // Header "Ask" box: open the widget and send the question through its own input.
+    function askBot(q) {
+      if (!q || !q.trim()) return;
+      const panel = document.getElementById('nitrklChatWindow');
+      if (!panel || !panel.classList.contains('nitrkl-open')) document.getElementById('nitrklTriggerBtn').click();
+      const input = document.querySelector('.nitrkl-input');
+      if (!input) return;
+      input.value = q.trim();
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    }
+  </script>
+  <script src="nitrkl-bot-widget.js"></script>
+</body>
+</html>

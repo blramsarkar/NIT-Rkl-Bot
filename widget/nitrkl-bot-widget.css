@@ -1,0 +1,556 @@
+/* ==============================================================================
+ * File: widget/nitrkl-bot-widget.css
+ * Role: CSS Stylesheet for Embeddable NIT Rourkela Chatbot Widget
+ * Purpose: Defines modern visual styling for the floating bubble, interactive chat
+ *          window, glassmorphism design, message bubbles, pill prompt chips,
+ *          source badge highlights, dark/light theme switching, and animations.
+ * ============================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --nitrkl-primary: #c35839;       /* NIT Rourkela website primary (brick red) */
+  --nitrkl-accent: #f9b117;        /* NIT Rourkela website accent gold */
+  --nitrkl-bg-light: #f9f8f8;
+  --nitrkl-card-light: #FFFFFF;
+  --nitrkl-text-light: #1F2937;
+  --nitrkl-border-light: #E5E7EB;
+
+  --nitrkl-bg-dark: #1b1716;
+  --nitrkl-card-dark: #27211f;
+  --nitrkl-text-dark: #F3F4F6;
+  --nitrkl-border-dark: #3f3532;
+
+  --nitrkl-font: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --nitrkl-shadow: 0 10px 30px rgba(195, 88, 57, 0.25);
+}
+
+/* Base Widget Reset */
+#nitrkl-widget-container {
+  font-family: var(--nitrkl-font);
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  box-sizing: border-box;
+}
+
+#nitrkl-widget-container * {
+  box-sizing: border-box;
+}
+
+/* Floating Trigger Button */
+.nitrkl-trigger-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--nitrkl-primary), #d9734f);
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--nitrkl-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+}
+
+.nitrkl-trigger-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 36px rgba(195, 88, 57, 0.35);
+}
+
+.nitrkl-trigger-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+.nitrkl-badge-pulse {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--nitrkl-accent);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  animation: pulse-ring 1.8s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 177, 23, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(249, 177, 23, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(249, 177, 23, 0); }
+}
+
+/* Floating Chat Window Modal */
+.nitrkl-chat-window {
+  width: 380px;
+  height: 580px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 100px);
+  background-color: var(--nitrkl-card-light);
+  color: var(--nitrkl-text-light);
+  border-radius: 16px;
+  box-shadow: var(--nitrkl-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  border: 1px solid var(--nitrkl-border-light);
+}
+
+.nitrkl-chat-window.nitrkl-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Dark Mode Theme Styles */
+.nitrkl-chat-window.dark-theme {
+  background-color: var(--nitrkl-card-dark);
+  color: var(--nitrkl-text-dark);
+  border-color: var(--nitrkl-border-dark);
+}
+
+/* Header Bar */
+.nitrkl-header {
+  background: linear-gradient(135deg, var(--nitrkl-primary), #9e432a);
+  color: #FFFFFF;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nitrkl-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nitrkl-avatar {
+  width: 34px;
+  height: 34px;
+  background-color: var(--nitrkl-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #5a2414;
+}
+
+.nitrkl-header-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.nitrkl-header-subtitle {
+  font-size: 11px;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.nitrkl-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nitrkl-icon-btn {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  opacity: 0.85;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nitrkl-icon-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Chat Body & Messages */
+.nitrkl-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: inherit;
+}
+
+.nitrkl-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.nitrkl-msg.bot {
+  align-self: flex-start;
+  background-color: var(--nitrkl-bg-light);
+  color: var(--nitrkl-text-light);
+  border-bottom-left-radius: 4px;
+  border: 1px solid var(--nitrkl-border-light);
+}
+
+.dark-theme .nitrkl-msg.bot {
+  background-color: var(--nitrkl-bg-dark);
+  color: var(--nitrkl-text-dark);
+  border-color: var(--nitrkl-border-dark);
+}
+
+.nitrkl-msg.user {
+  align-self: flex-end;
+  background-color: var(--nitrkl-primary);
+  color: #FFFFFF;
+  border-bottom-right-radius: 4px;
+}
+
+/* Prompt Chips Suggestions */
+.nitrkl-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.nitrkl-chip {
+  background-color: rgba(195, 88, 57, 0.08);
+  color: var(--nitrkl-primary);
+  border: 1px solid rgba(195, 88, 57, 0.2);
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-theme .nitrkl-chip {
+  background-color: rgba(249, 177, 23, 0.15);
+  color: var(--nitrkl-accent);
+  border-color: rgba(249, 177, 23, 0.3);
+}
+
+.nitrkl-chip:hover {
+  background-color: var(--nitrkl-primary);
+  color: #FFFFFF;
+}
+
+/* Source Badges */
+.nitrkl-sources {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--nitrkl-border-light);
+  font-size: 11px;
+}
+
+.dark-theme .nitrkl-sources {
+  border-top-color: var(--nitrkl-border-dark);
+}
+
+.nitrkl-source-badge {
+  display: inline-block;
+  background-color: rgba(249, 177, 23, 0.2);
+  color: #8a5a00;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 4px;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.dark-theme .nitrkl-source-badge {
+  color: var(--nitrkl-accent);
+}
+
+/* Typing Indicator */
+.nitrkl-typing-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.nitrkl-typing-dots span {
+  width: 6px;
+  height: 6px;
+  background-color: currentColor;
+  border-radius: 50%;
+  animation: typing-blink 1.4s infinite ease-in-out both;
+}
+
+.nitrkl-typing-dots span:nth-child(1) { animation-delay: 0s; }
+.nitrkl-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.nitrkl-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-blink {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Footer & Input Box */
+.nitrkl-footer {
+  padding: 10px 14px;
+  border-top: 1px solid var(--nitrkl-border-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: inherit;
+}
+
+.dark-theme .nitrkl-footer {
+  border-top-color: var(--nitrkl-border-dark);
+}
+
+.nitrkl-input {
+  flex: 1;
+  border: 1px solid var(--nitrkl-border-light);
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 13px;
+  outline: none;
+  background-color: var(--nitrkl-card-light);
+  color: var(--nitrkl-text-light);
+}
+
+.dark-theme .nitrkl-input {
+  background-color: var(--nitrkl-bg-dark);
+  color: var(--nitrkl-text-dark);
+  border-color: var(--nitrkl-border-dark);
+}
+
+.nitrkl-send-btn {
+  background-color: var(--nitrkl-primary);
+  color: #FFFFFF;
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nitrkl-send-btn:hover {
+  opacity: 0.9;
+}
+
+/* ---- v2.1 additions: language, quota, privacy, feedback, links ---- */
+.nitrkl-lang {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 6px;
+  font-size: 11px;
+  padding: 2px 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.nitrkl-lang option { color: #1F2937; }
+
+.nitrkl-quota {
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.nitrkl-quota.low { background: #FF9900; }
+.nitrkl-quota.none { background: #CC0000; }
+
+.nitrkl-chip { font-family: inherit; }
+.nitrkl-msg a { color: inherit; text-decoration: underline; font-weight: 600; }
+.nitrkl-msg.bot a:not(.nitrkl-source-badge) { color: var(--nitrkl-primary); }
+.dark-theme .nitrkl-msg.bot a:not(.nitrkl-source-badge) { color: var(--nitrkl-accent); }
+a.nitrkl-source-badge { text-decoration: none; }
+a.nitrkl-source-badge:hover { text-decoration: underline; }
+
+.nitrkl-footer-wrap { border-top: 1px solid var(--nitrkl-border-light); background-color: inherit; }
+.dark-theme .nitrkl-footer-wrap { border-top-color: var(--nitrkl-border-dark); }
+.nitrkl-footer-wrap .nitrkl-footer { border-top: none; padding-bottom: 4px; }
+.nitrkl-privacy {
+  font-size: 10.5px;
+  line-height: 1.35;
+  opacity: 0.7;
+  padding: 0 16px 8px;
+}
+
+.nitrkl-input:disabled, .nitrkl-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.nitrkl-feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+}
+.nitrkl-fb-btn {
+  background: transparent;
+  border: 1px solid var(--nitrkl-border-light);
+  border-radius: 12px;
+  padding: 1px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.nitrkl-fb-btn:hover { background: rgba(195, 88, 57, 0.08); }
+.dark-theme .nitrkl-fb-btn { border-color: var(--nitrkl-border-dark); }
+.nitrkl-fb-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  padding: 3px 8px;
+  border: 1px solid var(--nitrkl-border-light);
+  border-radius: 10px;
+  font-family: inherit;
+  background: var(--nitrkl-card-light);
+  color: var(--nitrkl-text-light);
+}
+.dark-theme .nitrkl-fb-input { background: var(--nitrkl-bg-dark); color: var(--nitrkl-text-dark); border-color: var(--nitrkl-border-dark); }
+.nitrkl-fb-send {
+  font-size: 11px;
+  border: none;
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: var(--nitrkl-primary);
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: inherit;
+}
+.nitrkl-fb-thanks { opacity: 0.75; }
+
+/* ==============================================================================
+ * Structured Content & Table Rendering in Bot Bubbles
+ * ============================================================================== */
+.nitrkl-text p.nitrkl-p {
+  margin: 0 0 8px 0;
+  line-height: 1.55;
+}
+.nitrkl-text p.nitrkl-p:last-child {
+  margin-bottom: 0;
+}
+
+.nitrkl-text h4.nitrkl-heading,
+.nitrkl-text h5.nitrkl-heading {
+  margin: 10px 0 6px 0;
+  color: var(--nitrkl-primary);
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+.dark-theme .nitrkl-text h4.nitrkl-heading,
+.dark-theme .nitrkl-text h5.nitrkl-heading {
+  color: var(--nitrkl-accent);
+}
+
+/* Lists */
+.nitrkl-text ul.nitrkl-list,
+.nitrkl-text ol.nitrkl-list {
+  margin: 6px 0 8px 0;
+  padding-left: 18px;
+}
+.nitrkl-text li {
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+.nitrkl-text li:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive Tables */
+.nitrkl-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 8px 0 10px 0;
+  border-radius: 8px;
+  border: 1px solid var(--nitrkl-border-light);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.dark-theme .nitrkl-table-wrap {
+  border-color: var(--nitrkl-border-dark);
+}
+
+.nitrkl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: left;
+  background-color: #FFFFFF;
+}
+.dark-theme .nitrkl-table {
+  background-color: var(--nitrkl-card-dark);
+}
+
+.nitrkl-table th {
+  background: linear-gradient(135deg, var(--nitrkl-primary), #9e432a);
+  color: #FFFFFF;
+  padding: 7px 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  border: none;
+}
+.dark-theme .nitrkl-table th {
+  background: #3a2a25;
+  color: var(--nitrkl-accent);
+}
+
+.nitrkl-table td {
+  padding: 7px 10px;
+  border-top: 1px solid var(--nitrkl-border-light);
+  color: var(--nitrkl-text-light);
+  vertical-align: top;
+}
+.dark-theme .nitrkl-table td {
+  border-top-color: var(--nitrkl-border-dark);
+  color: var(--nitrkl-text-dark);
+}
+
+.nitrkl-table tbody tr:nth-child(even) {
+  background-color: #F8FAFC;
+}
+.dark-theme .nitrkl-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.nitrkl-table tbody tr:hover {
+  background-color: rgba(195, 88, 57, 0.04);
+}
+.dark-theme .nitrkl-table tbody tr:hover {
+  background-color: rgba(249, 177, 23, 0.05);
+}
+
+/* Inline Code Badges */
+.nitrkl-code {
+  font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  background-color: rgba(0, 0, 0, 0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 85%;
+}
+.dark-theme .nitrkl-code {
+  background-color: rgba(255, 255, 255, 0.1);
+}

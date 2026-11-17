@@ -1,0 +1,24 @@
+# ==============================================================================
+# File: backend/requirements.txt
+# Role: Production dependencies manifest for the NIT Rourkela Chatbot API Backend
+# Purpose: Lists all Python package requirements with version bounds necessary to
+#          run FastAPI, SQLAlchemy ORM, pgvector vector search, LLM client libraries
+#          (Anthropic & Groq), document ingestion, scraping, and rate limiting.
+# ==============================================================================
+
+fastapi>=0.104.0,<1.0.0
+uvicorn[standard]>=0.24.0,<1.0.0
+pydantic>=2.4.0,<3.0.0
+pydantic-settings>=2.0.0,<3.0.0
+sqlalchemy>=2.0.0,<3.0.0
+psycopg2-binary>=2.9.9,<3.0.0
+pgvector>=0.2.3,<1.0.0
+anthropic>=0.40.0,<1.0.0
+groq>=0.4.0,<1.0.0
+httpx>=0.25.0,<1.0.0
+beautifulsoup4>=4.12.0,<5.0.0
+pypdf>=3.17.0,<4.0.0
+sentence-transformers>=2.2.2,<3.0.0
+numpy>=1.24.0,<2.0.0
+slowapi>=0.1.8,<1.0.0
+python-dotenv>=1.0.0,<2.0.0

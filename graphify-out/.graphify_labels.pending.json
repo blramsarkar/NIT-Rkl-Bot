@@ -1,0 +1,19 @@
+{
+  "0": "structured_tools.py",
+  "1": "agent_router.py",
+  "2": "main.py",
+  "3": "ingest_all_departments.py",
+  "4": "os",
+  "5": "web_scraper.py",
+  "6": "source_pages.py",
+  "7": "nitrkl-bot-widget.js",
+  "8": "1. Technology Stack Breakdown (What Each Tech Stack Component Is Used For)",
+  "9": "Added / fixed",
+  "10": "scheduler.py",
+  "11": "2. Quick Start & Local Setup",
+  "12": "admin.js",
+  "13": "ponytail-graphify",
+  "14": "app/__init__.py",
+  "15": "tests/__init__.py",
+  "16": "CLAUDE.md"
+}
